@@ -1,18 +1,46 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul v-if="hasMemos">
+      <li v-for="memo in memos" :key="memo.id">
+        <!-- nameはrouter.jsで指定したもの -->
+        <router-link :to="{name: 'edit', params: {id: memo.id}}">
+          {{memo.title}}
+        </router-link>
+      </li>
+    </ul>
+    <p v-else>メモはありません</p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
+export default{
+  name: 'HomwView',
+  computed: {
+    hasMemos() {
+      return this.$store.getters.getCount
+    },
+    memos () {
+      return this.$store.getters.getAll
+    }
   }
 }
 </script>
+
+<style scoped>
+ul{
+  margin: 0;
+  padding: 0;
+}
+li{
+  list-style: none;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+li a{
+  color: #999;
+  text-decoration: none;
+  width: 100%;
+  display:block;
+}
+</style>
